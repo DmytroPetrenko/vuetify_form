@@ -35,12 +35,10 @@ export default {
 			let original = this.$refs.stepper.setCurrentStepIndex // preserve original function
 			this.$refs.stepper.setCurrentStepIndex = (index) => {
 				this.$refs.formPersonalData.$v.$touch()
-				this.$refs.formVerification.$v.$touch()
 				this.$refs.formWalletConfig.$v.$touch()
 				if (this.formStatus) {
 					original(index)
 					this.$refs.formPersonalData.$v.$reset()
-					this.$refs.formVerification.$v.$reset()
 					this.$refs.formWalletConfig.$v.$reset()
 					this.formStatus = !this.formStatus
 				}

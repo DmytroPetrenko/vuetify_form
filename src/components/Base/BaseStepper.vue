@@ -32,7 +32,11 @@
 					</v-card>
 				</slot>
 
-				<v-btn ref="continueButton" color="primary" @click="setCurrentStepIndex(index + 2)">
+				<v-btn
+					ref="continueButton"
+					color="primary"
+					@click="setCurrentStepIndex(index + 2)"
+				>
 					Continue
 				</v-btn>
 
@@ -61,7 +65,7 @@ export default {
 	},
 	data() {
 		return {
-			currentStepIndex: 1,
+			currentStepIndex: 3,
 		}
 	},
 	methods: {

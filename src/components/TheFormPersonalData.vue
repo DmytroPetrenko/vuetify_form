@@ -1,5 +1,5 @@
 <template>
-	<form >
+	<form>
 		<v-text-field
 			v-model="name"
 			:error-messages="nameErrors"
@@ -8,6 +8,15 @@
 			required
 			@input="$v.name.$touch()"
 			@blur="$v.name.$touch()"
+		></v-text-field>
+		<v-text-field
+			v-model="phone"
+			:error-messages="phoneErrors"
+			:counter="13"
+			label="Phone"
+			required
+			@input="$v.phone.$touch()"
+			@blur="$v.phone.$touch()"
 		></v-text-field>
 		<v-text-field
 			v-model="email"
@@ -21,7 +30,7 @@
 			v-model="select"
 			:items="items"
 			:error-messages="selectErrors"
-			label="Item"
+			label="Delivery town"
 			required
 			@change="$v.select.$touch()"
 			@blur="$v.select.$touch()"
@@ -39,13 +48,19 @@
 
 <script>
 import { validationMixin } from "vuelidate"
-import { required, maxLength, email } from "vuelidate/lib/validators"
-
+import { required, minLength, maxLength, email } from "vuelidate/lib/validators"
+import phone from "@/utils/phone"
 export default {
 	mixins: [validationMixin],
 
 	validations: {
 		name: { required, maxLength: maxLength(20) },
+		phone: {
+			required,
+			minLength: minLength(13),
+			maxLength: maxLength(13),
+			phone,
+		},
 		email: { required, email },
 		select: { required },
 		checkbox: {
@@ -57,9 +72,10 @@ export default {
 
 	data: () => ({
 		name: "",
+		phone: "+38",
 		email: "",
 		select: null,
-		items: ["Item 1", "Item 2", "Item 3", "Item 4"],
+		items: ["Kyiv", "Lviv", "Kharkiv", "Odesa"],
 		checkbox: false,
 	}),
 
@@ -82,6 +98,18 @@ export default {
 			!this.$v.name.maxLength &&
 				errors.push("Name must be at most 20 characters long")
 			!this.$v.name.required && errors.push("Name is required.")
+			return errors
+		},
+		phoneErrors() {
+			const errors = []
+			if (!this.$v.phone.$dirty) return errors
+			!this.$v.phone.phone && errors.push("Phone must be only with digit and start from plus")
+			!this.$v.phone.minLength &&
+				errors.push("Phone must be at least 13 characters long")
+			!this.$v.phone.maxLength &&
+				errors.push("Phone must be at most 13 characters long")
+
+			!this.$v.phone.required && errors.push("Phone is required.")
 			return errors
 		},
 		emailErrors() {
